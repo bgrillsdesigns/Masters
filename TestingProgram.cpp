@@ -35,6 +35,8 @@ int Check(int nArray[], int guess){
 		return 0;
 
 }
+
+//oof;
 void Guess(int nArray[], int n){
 	int result;
 	int guess = n / 2;
