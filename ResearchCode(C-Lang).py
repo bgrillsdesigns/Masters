@@ -56,6 +56,8 @@ def CommentBlockCheck(lowLine, inFileR) :
                     return tempHigh, tempStringArray
                 elif line[i:i+2] == "*/" and tempHigh == 0 :
                     return 0, []
+
+    print("ERROR")
                     
     
 def Quarentine(oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer) :
