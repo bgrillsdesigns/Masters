@@ -24,13 +24,13 @@ def CheckForComments(inFileR, qFile, oFile) :
         for i in range(0, line.__len__()) :
             if line[i:i+2] == "//" :
                 for j in range(0, line.__len__()) :
-                    if line[j:j+1] == ";" :
+                    if line[j:j+1] == ";" or line[i:i+1] == ")" :
                         quarentineContainer.append(line)
                         lowLineContainer.append(str(lowLine))
                         highLineContainer.append(str(lowLine))
             if line[i:i+2] == "/*" :
                 print("foo")
-                tempHigh, tempStringArray = CommentBlockCheck(lowLine, inFileR)
+                tempHigh, tempStringArray = CommentBlockCheck(lowLine, inFileR, line)
                 if tempHigh != 0 :     
                     quarentineContainer.append(tempStringArray)
                     lowLineContainer.append(str(lowLine))
@@ -38,24 +38,29 @@ def CheckForComments(inFileR, qFile, oFile) :
     
     Quarentine(oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer)
 
-def CommentBlockCheck(lowLine, inFileR) :
+def CommentBlockCheck(lowLine, inFileR, line) :
     print("bar")
     tempLow = 0
     tempHigh = 0
-    tempStringArray = []
+    tempStringArray = line
     for line in inFileR :
+        print("foo2")
         tempLow = tempLow + 1
-        if tempLow >= lowLine :
-            for i in range(0, line.__len__()) :
-                if line[i:i+1] == ";" :
-                    tempStringArray.append(line)
-                    tempHigh = tempLow
-                if line[i:i+2] == "*/" and tempHigh != 0 :
-                    tempStringArray.append(line)
-                    tempHigh = tempLow
-                    return tempHigh, tempStringArray
-                elif line[i:i+2] == "*/" and tempHigh == 0 :
-                    return 0, []
+        
+        print("test")
+        for i in range(0, line.__len__()) :
+            if line[i:i+1] == ";" or line[i:i+1] == ")" :
+                tempStringArray = "%s %s" % (tempStringArray, line)
+                tempHigh = tempLow
+            if line[i:i+2] == "*/" and tempHigh != 0 :
+                print("bar2")
+                tempStringArray = "%s %s" % (tempStringArray, line)
+                tempHigh = tempLow
+                print(tempStringArray)
+                return tempHigh + lowLine, tempStringArray
+            elif line[i:i+2] == "*/" and tempHigh == 0 :
+                print("bar3")
+                return 0, ""
 
     print("ERROR")
                     
@@ -64,7 +69,7 @@ def Quarentine(oFile, qFile, quarentineContainer, lowLineContainer, highLineCont
     for i in range(0, quarentineContainer.__len__()) :
         qFile.write("The commented code began at line " + lowLineContainer[i] + " and ended at line " + highLineContainer[i] + "\n")
         qFile.write("The commented code is shown below:" + "\n")
-        qFile.write(quarentineContainer[i] + "\n \n")
+        qFile.write(quarentineContainer[i] + "\n" + "\n")
     
     BuildClean(inFileR, oFile, lowLineContainer, highLineContainer)
         
