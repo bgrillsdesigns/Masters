@@ -93,8 +93,7 @@ int main(){
 	}*/
 
 	/*Why not build the array in its own function?
-	nArray = BuildArray(n);
-	*/
+	nArray = BuildArray(n);*/
 
 	for(int i = 0; i <= n; i++){
 		nArray[i] = (i+1);
