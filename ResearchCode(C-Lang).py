@@ -12,8 +12,6 @@ qFile = open("quarentine.md", "w")
 
 def CheckForComments(inFileR, qFile, oFile) :
     lowLine = 0
-    highLine = 0
-    tempLow = 0
     tempHigh = 0
     tempStringArray = []
     quarentineContainer = []
@@ -33,14 +31,15 @@ def CheckForComments(inFileR, qFile, oFile) :
                 tempHigh, tempStringArray = CommentBlockCheck(lowLine, inFileR, line)
                 if tempHigh != 0 :     
                     quarentineContainer.append(tempStringArray)
-                    lowLineContainer.append(str(lowLine))
+                    lowLineContainer.append(str(lowLine + 1))
                     highLineContainer.append(str(tempHigh))
+                    lowLine = tempHigh - 1
     
-    Quarentine(oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer)
+    Quarentine(inFileR, oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer)
 
 def CommentBlockCheck(lowLine, inFileR, line) :
     print("bar")
-    tempLow = 0
+    tempLow = 1
     tempHigh = 0
     tempStringArray = line
     for line in inFileR :
@@ -65,17 +64,46 @@ def CommentBlockCheck(lowLine, inFileR, line) :
     print("ERROR")
                     
     
-def Quarentine(oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer) :
+def Quarentine(inFileR, oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer) :
     for i in range(0, quarentineContainer.__len__()) :
         qFile.write("The commented code began at line " + lowLineContainer[i] + " and ended at line " + highLineContainer[i] + "\n")
         qFile.write("The commented code is shown below:" + "\n")
         qFile.write(quarentineContainer[i] + "\n" + "\n")
     
+    inFileR.close()
+    #infileR = open(sys.argv[-1], "r")
+    inFileR = open("TestingProgram.cpp", "r")
+
     BuildClean(inFileR, oFile, lowLineContainer, highLineContainer)
         
 
 def BuildClean(inFileR, oFile, lowLineContainer, highLineContainer) :
-    pass
+    tempLine = 1
+    i = 0
+    blockTracer = False
+    for line in inFileR :
+
+        if (int(lowLineContainer[i]) == tempLine and lowLineContainer[i] == highLineContainer[i]) :
+            print("clean1")
+            oFile.write("//commented out code was ommited here \n")
+            i = i + 1
+            if (i == highLineContainer.__len__()) :
+                    i = highLineContainer.__len__() - 1
+        elif (int(lowLineContainer[i]) == tempLine and lowLineContainer[i] < highLineContainer[i]) :
+            print("clean2")
+            oFile.write("//commented out code was ommited here \n")
+            blockTracer = True
+        elif (blockTracer == True and tempLine <= int(highLineContainer[i])) :
+            print("clean3")
+            oFile.write("//commented out code was ommited here \n")
+            if(tempLine == int(highLineContainer[i])) :
+                blockTracer = False
+                i = i + 1
+                if (i == highLineContainer.__len__()) :
+                    i = highLineContainer.__len__() - 1
+        else :
+            oFile.write("%s" %(line))
+        tempLine = tempLine + 1
 
 CheckForComments(inFileR, qFile, oFile)
 
