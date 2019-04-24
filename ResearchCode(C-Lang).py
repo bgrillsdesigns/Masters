@@ -39,24 +39,36 @@ def CheckForComments(inFileR, qFile, oFile) :
 def CommentBlockCheck(lowLine, inFileR, line) :
     tempLow = 1
     tempHigh = 0
+    containsComments = False
     tempStringArray = line
     for line in inFileR :
         tempLow = tempLow + 1
-        
+        tempStringArray = ("%s %s") % (tempStringArray, line)
+
         for i in range(0, line.__len__()) :
-            if line[i:i+2] == "*/" and tempHigh != 0 :
-                print("Foo1")
-                tempStringArray = "%s %s" % (tempStringArray, line)
+            if line[i:i+1] == ";" or line[i:i+1] == ")" or line[i:i+1] == "{" :
+                containsComments = True
+            if containsComments == True and line[i:i+2] == "*/" :
                 tempHigh = tempLow
-                print(tempStringArray)
                 return tempHigh + lowLine, tempStringArray
-            elif line[i:i+1] == ";" or line[i:i+1] == ")" :
-                tempStringArray = "%s %s" % (tempStringArray, line)
-                tempHigh = tempLow
-                print("Foo2")                
-            elif line[i:i+2] == "*/" and tempHigh == 0 :
-                print("Foo3")
-                return 0, ""
+#            if line[i:i+2] == "*/" and tempHigh != 0 :
+#                print("Foo1")
+#                tempStringArray = "%s %s" % (tempStringArray, line)
+#                tempHigh = tempLow
+#                print(tempStringArray)
+#                return tempHigh + lowLine, tempStringArray
+#            elif line[i:i+1] == ";" :
+#                tempStringArray = "%s %s" % (tempStringArray, line)
+#                tempHigh = tempLow
+#                print("Foo2")  
+#            elif line[i:i+1] == ")" :
+#                tempStringArray = "%s %s" % (tempStringArray, line)
+#                tempHigh = tempLow
+#                print("Foo3")              
+    if containsComments == False :
+        print("Foo4")
+        return 0, ""
+
 
     
                     
