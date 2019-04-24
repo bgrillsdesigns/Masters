@@ -27,7 +27,6 @@ def CheckForComments(inFileR, qFile, oFile) :
                         lowLineContainer.append(str(lowLine))
                         highLineContainer.append(str(lowLine))
             if line[i:i+2] == "/*" :
-                print("foo")
                 tempHigh, tempStringArray = CommentBlockCheck(lowLine, inFileR, line)
                 if tempHigh != 0 :     
                     quarentineContainer.append(tempStringArray)
@@ -38,30 +37,28 @@ def CheckForComments(inFileR, qFile, oFile) :
     Quarentine(inFileR, oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer)
 
 def CommentBlockCheck(lowLine, inFileR, line) :
-    print("bar")
     tempLow = 1
     tempHigh = 0
     tempStringArray = line
     for line in inFileR :
-        print("foo2")
         tempLow = tempLow + 1
         
-        print("test")
         for i in range(0, line.__len__()) :
-            if line[i:i+1] == ";" or line[i:i+1] == ")" :
-                tempStringArray = "%s %s" % (tempStringArray, line)
-                tempHigh = tempLow
             if line[i:i+2] == "*/" and tempHigh != 0 :
-                print("bar2")
+                print("Foo1")
                 tempStringArray = "%s %s" % (tempStringArray, line)
                 tempHigh = tempLow
                 print(tempStringArray)
                 return tempHigh + lowLine, tempStringArray
+            elif line[i:i+1] == ";" or line[i:i+1] == ")" :
+                tempStringArray = "%s %s" % (tempStringArray, line)
+                tempHigh = tempLow
+                print("Foo2")                
             elif line[i:i+2] == "*/" and tempHigh == 0 :
-                print("bar3")
+                print("Foo3")
                 return 0, ""
 
-    print("ERROR")
+    
                     
     
 def Quarentine(inFileR, oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer) :
@@ -84,17 +81,14 @@ def BuildClean(inFileR, oFile, lowLineContainer, highLineContainer) :
     for line in inFileR :
 
         if (int(lowLineContainer[i]) == tempLine and lowLineContainer[i] == highLineContainer[i]) :
-            print("clean1")
             oFile.write("//commented out code was ommited here \n")
             i = i + 1
             if (i == highLineContainer.__len__()) :
                     i = highLineContainer.__len__() - 1
         elif (int(lowLineContainer[i]) == tempLine and lowLineContainer[i] < highLineContainer[i]) :
-            print("clean2")
             oFile.write("//commented out code was ommited here \n")
             blockTracer = True
         elif (blockTracer == True and tempLine <= int(highLineContainer[i])) :
-            print("clean3")
             oFile.write("//commented out code was ommited here \n")
             if(tempLine == int(highLineContainer[i])) :
                 blockTracer = False
