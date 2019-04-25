@@ -50,29 +50,11 @@ def CommentBlockCheck(lowLine, inFileR, line) :
                 containsComments = True
             if containsComments == True and line[i:i+2] == "*/" :
                 tempHigh = tempLow
-                return tempHigh + lowLine, tempStringArray
-#            if line[i:i+2] == "*/" and tempHigh != 0 :
-#                print("Foo1")
-#                tempStringArray = "%s %s" % (tempStringArray, line)
-#                tempHigh = tempLow
-#                print(tempStringArray)
-#                return tempHigh + lowLine, tempStringArray
-#            elif line[i:i+1] == ";" :
-#                tempStringArray = "%s %s" % (tempStringArray, line)
-#                tempHigh = tempLow
-#                print("Foo2")  
-#            elif line[i:i+1] == ")" :
-#                tempStringArray = "%s %s" % (tempStringArray, line)
-#                tempHigh = tempLow
-#                print("Foo3")              
-    if containsComments == False :
-        print("Foo4")
-        return 0, ""
+                return tempHigh + lowLine, tempStringArray             
+            if containsComments == False and line[i:i+2] == "*/" :
+                return 0, ""
 
-
-    
-                    
-    
+  
 def Quarentine(inFileR, oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer) :
     for i in range(0, quarentineContainer.__len__()) :
         qFile.write("The commented code began at line " + lowLineContainer[i] + " and ended at line " + highLineContainer[i] + "\n")

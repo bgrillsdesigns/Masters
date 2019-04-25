@@ -70,6 +70,18 @@ int main(){
 	//detect and remove commented out code and place it in a quarentiening document
 
 	/*The goal of this program should be reached in both types of comments in C++
+	the standard double slash and the block commenting style*/
+	int n;
+
+	std::cout << "This is a guessing game, lets have some fun!" << std::endl;
+	std::cout << "I want you to think of a number, I am going " << std::endl;
+	std::cout << "to guess what your number is. it does not   " << std::endl;
+	std::cout << "matter how large it is; just make sure that " << std::endl;
+	std::cout << "it is a positive number!" << std::endl;
+
+	n = FindN();
+	int nArray [n];
+
 //commented out code was ommited here 
 //commented out code was ommited here 
 //commented out code was ommited here 
@@ -79,22 +91,10 @@ int main(){
 //commented out code was ommited here 
 //commented out code was ommited here 
 //commented out code was ommited here 
+
 //commented out code was ommited here 
 //commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-//commented out code was ommited here 
-	/*Why not build the array in its own function?
-//commented out code was ommited here 
-//commented out code was ommited here 
+
 	for(int i = 0; i <= n; i++){
 		nArray[i] = (i+1);
 	}
