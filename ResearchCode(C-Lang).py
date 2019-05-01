@@ -7,7 +7,7 @@ import sys
 import glob
 import os
 
-def CheckForComments(inFileR, qFile, oFile) :
+def CheckForComments(fileCP, fileQuar, inFileR, qFile, oFile, resultsFile) :
     lowLine = 0
     tempHigh = 0
     tempStringArray = []
@@ -33,13 +33,14 @@ def CheckForComments(inFileR, qFile, oFile) :
                     highLineContainer.append(str(tempHigh))
                     lowLine = tempHigh - 1
     
-    Quarentine(inFileR, oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer)
+    Quarentine(fileCP, fileQuar, inFileR, oFile, qFile, resultsFile, quarentineContainer, lowLineContainer, highLineContainer)
 
 def CommentBlockCheck(lowLine, inFileR, line) :
     tempLow = 1
     tempHigh = 0
     containsComments = False
     tempStringArray = line
+
     for line in inFileR :
         tempLow = tempLow + 1
         tempStringArray = ("%s %s") % (tempStringArray, line)
@@ -53,24 +54,29 @@ def CommentBlockCheck(lowLine, inFileR, line) :
                 if(semicolon == -1) :
                     return 0, ""
                 return tempHigh + lowLine, tempStringArray             
-            if containsComments == False and line[i:i+2] == "*/" :
+            elif containsComments == False and line[i:i+2] == "*/" :
                 return 0, ""
+    print(inFileR, "error")
 
   
-def Quarentine(inFileR, oFile, qFile, quarentineContainer, lowLineContainer, highLineContainer) :
+def Quarentine(fileCP, fileQuar, inFileR, oFile, qFile, resultsFile, quarentineContainer, lowLineContainer, highLineContainer) :
+    if(quarentineContainer.__len__() > 0) :
+        resultsFile.write("%s %s %s %s" % (inFileR, "contains", quarentineContainer.__len__(), "sections of commented out code. \n"))
+
     for i in range(0, quarentineContainer.__len__()) :
         qFile.write("The commented code began at line " + lowLineContainer[i] + " and ended at line " + highLineContainer[i] + "\n")
         qFile.write("The commented code is shown below:" + "\n")
         qFile.write(quarentineContainer[i] + "\n" + "\n")
-    
-    inFileR.close()
-    #infileR = open(sys.argv[-1], "r")
-    inFileR = open("TestingProgram.cpp", "r")
 
-    BuildClean(inFileR, oFile, lowLineContainer, highLineContainer)
+    if(quarentineContainer.__len__() == 0) :
+        qFile.close()
+        os.remove(fileQuar)  
+    else :
+        qFile.close()
+    BuildClean(fileCP, fileQuar, inFileR, oFile, lowLineContainer, highLineContainer)
         
 
-def BuildClean(inFileR, oFile, lowLineContainer, highLineContainer) :
+def BuildClean(fileCP, fileQuar, inFileR, oFile, lowLineContainer, highLineContainer) :
     tempLine = 1
     i = 0
     blockTracer = False
@@ -97,23 +103,30 @@ def BuildClean(inFileR, oFile, lowLineContainer, highLineContainer) :
         else :
             oFile.write("%s" %(line))
         tempLine = tempLine + 1
+    
+    if(lowLineContainer.__len__() == 0) :
+        oFile.close()
+        os.remove(fileCP)  
+    else : 
+        oFile.close()
 
+
+resultsFile = open("resultsFile.md", "w")
+resultsFile.write("The following files contain commented out code(included is the frequency) : \n")
 cp = "CleanedProgram.cs"
 quar = "quarentine.md"
 
 path = sys.argv[-1]
 for fileName in glob.glob(os.path.join(path, '*.cs')) :
-    #fileName = fileName.split(path)
-    #fileName = fileName[1][1:]
     inFileR = open(fileName, "r")
     fileCP = "%s %s" % (fileName[0:-3], cp)
     fileQuar = "%s %s" % (fileName[0:-3], quar)
     oFile = open(fileCP, "w")
     qFile = open(fileQuar, "w")
 
-    CheckForComments(inFileR, qFile, oFile)
+    CheckForComments(fileCP, fileQuar, inFileR, qFile, oFile, resultsFile)
 
     inFileR.close()
-    oFile.close()
-    qFile.close()
+
+resultsFile.close()
 
