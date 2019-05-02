@@ -8,7 +8,7 @@ The commented code is shown below:
 //oof;
 
 
-The commented code began at line 84 and ended at line 92
+The commented code began at line 85 and ended at line 93
 The commented code is shown below:
 	/*Lets build the array (false code follows)
  	int i = 1;
@@ -21,11 +21,9 @@ The commented code is shown below:
  	}*/
 
 
-The commented code began at line 86 and ended at line 87
+The commented code began at line 95 and ended at line 96
 The commented code is shown below:
 	/*Why not build the array in its own function?
- 	nArray = BuildArray(n);*/
- 	nArray = BuildArray(n);*/
  	nArray = BuildArray(n);*/
 
 
