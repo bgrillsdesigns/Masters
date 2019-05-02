@@ -7,7 +7,7 @@ import sys
 import glob
 import os
 
-def CheckForComments(fileCP, fileQuar, inFileR, qFile, oFile, resultsFile) :
+def CheckForComments(fileName, fileCP, fileQuar, inFileR, qFile, oFile, resultsFile) :
     lowLine = 0
     tempHigh = 0
     tempStringArray = []
@@ -33,7 +33,7 @@ def CheckForComments(fileCP, fileQuar, inFileR, qFile, oFile, resultsFile) :
                     highLineContainer.append(str(tempHigh))
                     lowLine = tempHigh - 1
     
-    Quarentine(fileCP, fileQuar, inFileR, oFile, qFile, resultsFile, quarentineContainer, lowLineContainer, highLineContainer)
+    Quarentine(fileName, fileCP, fileQuar, inFileR, oFile, qFile, resultsFile, quarentineContainer, lowLineContainer, highLineContainer)
 
 def CommentBlockCheck(lowLine, inFileR, line) :
     tempLow = 1
@@ -59,7 +59,7 @@ def CommentBlockCheck(lowLine, inFileR, line) :
     print(inFileR, "error")
 
   
-def Quarentine(fileCP, fileQuar, inFileR, oFile, qFile, resultsFile, quarentineContainer, lowLineContainer, highLineContainer) :
+def Quarentine(fileName, fileCP, fileQuar, inFileR, oFile, qFile, resultsFile, quarentineContainer, lowLineContainer, highLineContainer) :
     if(quarentineContainer.__len__() > 0) :
         resultsFile.write("%s %s %s %s" % (inFileR, "contains", quarentineContainer.__len__(), "sections of commented out code. \n"))
 
@@ -73,6 +73,9 @@ def Quarentine(fileCP, fileQuar, inFileR, oFile, qFile, resultsFile, quarentineC
         os.remove(fileQuar)  
     else :
         qFile.close()
+
+    inFileR.close()
+    inFileR = open(fileName, "r")
     BuildClean(fileCP, fileQuar, inFileR, oFile, lowLineContainer, highLineContainer)
         
 
@@ -124,7 +127,7 @@ for fileName in glob.glob(os.path.join(path, '*.cs')) :
     oFile = open(fileCP, "w")
     qFile = open(fileQuar, "w")
 
-    CheckForComments(fileCP, fileQuar, inFileR, qFile, oFile, resultsFile)
+    CheckForComments(fileName, fileCP, fileQuar, inFileR, qFile, oFile, resultsFile)
 
     inFileR.close()
 
