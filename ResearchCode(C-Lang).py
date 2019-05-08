@@ -1,7 +1,7 @@
 #Author: Blake Grills
 #This program is being used to analyze c-lang code 
-#in order to find quarentine and then rebuild a program
-#of all commented out codes
+#in order to find, quarentine, and then rebuild a program
+#of all commented out code
 
 import sys
 import glob
@@ -113,13 +113,15 @@ def BuildClean(fileCP, fileQuar, inFileR, oFile, lowLineContainer, highLineConta
     else : 
         oFile.close()
 
+path = sys.argv[-1]
 
-resultsFile = open("resultsFile.md", "w")
+resultsFileName = "%s %s" % (path, "results.md")
+resultsFile = open(resultsFileName, "w")
 resultsFile.write("The following files contain commented out code(included is the frequency) : \n")
 cp = "CleanedProgram.cs"
 quar = "quarentine.md"
 
-path = sys.argv[-1]
+
 for fileName in glob.glob(os.path.join(path, '*.cs')) :
     inFileR = open(fileName, "r")
     fileCP = "%s %s" % (fileName[0:-3], cp)
