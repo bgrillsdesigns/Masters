@@ -1,4 +1,4 @@
-#Author: Blake Grills
+#Author: Blake Grills, Nathaniel Light
 #This program is being used to analyze c-lang code 
 #in order to find, quarentine, and then rebuild a program
 #of all commented out code
@@ -115,7 +115,7 @@ def BuildClean(fileCP, fileQuar, inFileR, oFile, lowLineContainer, highLineConta
 
 path = sys.argv[-1]
 
-resultsFileName = "%s %s" % (path, "results.md")
+resultsFileName = "%s %s" % (path, "resultsLines.md")
 resultsFile = open(resultsFileName, "w")
 resultsFile.write("The following files contain commented out code(included is the frequency) : \n")
 cp = "CleanedProgram.cs"
